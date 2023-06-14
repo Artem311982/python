@@ -1,7 +1,7 @@
 import random
 
 import pygame
-from pygame.constants import QUIT
+from pygame.constants import QUIT, K_DOWN, K_UP, K_LEFT, K_RIGHT
 
 pygame.init()
 
@@ -20,6 +20,8 @@ player = pygame.Surface(player_size)
 player.fill(color_white)
 player_rect = player.get_rect()
 # player_speed = [1, 1]
+player_move_down = [0, 1]
+player_move_right = [1, 0]
 
 playing = True
 
@@ -34,8 +36,11 @@ while playing:
 
     keys = pygame.key.get_pressed()
 
-    if keys[K_DOWN]:
-        print("Pressed")
+    if keys[K_DOWN] and player_rect.bottom < height:
+        player_rect = player_rect.move(player_move_down)
+
+    if keys[K_RIGHT] and player_move_right < width:
+        player_rect = player_rect.move(player_move_right)
 
     # if player_rect.bottom >= height:
     #     player_speed = random.choice(([1, -1], [-1, -1]))
