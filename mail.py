@@ -21,6 +21,27 @@ cur.execute(
 
 connection.commit()
 
+def add_transaction():
+        if type_combobox.get() and amount_entry.get():
+              try:
+                    transaction_type = type_combobox.get()
+                    amount = float(amount_entry.get())
+                    comment= comment_entry.get()
+                    date = date_entry.get()
+
+                    cur.execute("""
+                        INSERT INTO transaction (date, type, amount, comment)
+                        VALUES(?, ?, ?, ?)""", date, transaction_type, amount, comment)
+                    
+                transaction_id = cur.lastrowid
+              
+
+
+
+
+
+                except:
+
 root = Tk()
 root.title("Домашня бухгалтерія")
 root.geometry("700x340")
