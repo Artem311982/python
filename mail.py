@@ -35,12 +35,21 @@ def add_transaction():
                     
                 transaction_id = cur.lastrowid
               
+                treeview.insert(parent: "", END, values=(transaction_id, date, transaction_type, amount, comment))
+              
+                type_combobox.set("")
+                amount_entry.delete(first: 0, END)
+                comment_entry.delete(first: 0, END)
+                messagebox.showinfo(title: "Успіх", message: "Транзакція успішно додана")
+
+        except ValueError:
+            messagebox.showerror(title: "Помилка", message: "Сумма введена не вірно!")
+        else:
+            messagebox.showinfo(titile: "Предупреждение", message: "Заповнені не всі поля!")
 
 
 
 
-
-                except:
 
 root = Tk()
 root.title("Домашня бухгалтерія")
