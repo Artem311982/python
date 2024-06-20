@@ -48,7 +48,20 @@ def add_transaction():
             messagebox.showinfo(titile: "Предупреждение", message: "Заповнені не всі поля!")
 
 
+def dalete_transaction():
+     selected_item = treeiew.selection()
+     if selected_item:
+          item_values = treeiew.item(selected_item, "values")
+          transaction_id = item_values[0]
+          cur.execute("DELETE FROM transactions WHERE id=", (transaction_id,))
+          connection.commit()
+          treeiew.delete(selected_item)
+          messagebox.showinfo("Успіх", "Транзакцію видалено")
 
+     else:
+          messagebox.showinfo(title: "Попередження", message: "Оберіть транзакцію для видалення")
+
+          
 
 
 root = Tk()
