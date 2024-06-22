@@ -35,17 +35,18 @@ def add_transaction():
                     
                 transaction_id = cur.lastrowid
               
-                treeview.insert(parent: "", END, values=(transaction_id, date, transaction_type, amount, comment))
+                treeview.insert("", END, values=(transaction_id, date, transaction_type, amount, comment))
               
                 type_combobox.set("")
-                amount_entry.delete(first: 0, END)
-                comment_entry.delete(first: 0, END)
-                messagebox.showinfo(title: "Успіх", message: "Транзакція успішно додана")
+                amount_entry.delete(0, END)
+                comment_entry.delete(0, END)
+                messagebox.showinfo("Успіх", "Транзакція успішно додана")
 
         except ValueError:
-            messagebox.showerror(title: "Помилка", message: "Сумма введена не вірно!")
+            messagebox.showerror("Помилка", "Сумма введена не вірно!")
+        
         else:
-            messagebox.showinfo(titile: "Предупреждение", message: "Заповнені не всі поля!")
+            messagebox.showinfo("Предупреждение", "Заповнені не всі поля!")
 
 
 def dalete_transaction():
@@ -59,15 +60,52 @@ def dalete_transaction():
           messagebox.showinfo("Успіх", "Транзакцію видалено")
 
      else:
-          messagebox.showinfo(title: "Попередження", message: "Оберіть транзакцію для видалення")
+          messagebox.showinfo("Попередження", "Оберіть транзакцію для видалення")
 
+    def delete_all_transactions():
+        confirm = messagebox.askyesno("Підтвердження", "Ви впевнені, що хочите видалити всі иранзакції?")
+        if confirm:
+            cur.execute("DELETE FROM transactions")
+            connection.commit()
+            treeiew.delete(treeiew.get_children())
+            messagebox.showinfo("Успіх", "Всі транзакції успішно видалені")
+
+
+    def edit_transaction()
+        selected_item = treeiew.selection()
+        if not selected_item:
+             messagebox.showerror("Транзакцію не обрано", "Будь ласка, оберіть транзакцію в таблиці, щоб відредагувати")
+
+             return
           
+        transaction_id = treeiew.set(selected_item, "#1")
+        date = date_entry.get()
+        transaction_type = type_combobox.get()
+        amount = amount_entry.get()
+        comment = comment_entry.get()
+
+        cur.execute("UPDATE transactions SET date = ?, type = ?, amount = ?, comment = ? WHERE id = ?", (date, transaction_type, amount, comment, transaction_id))
+
+    def on_row_click(event):
+        if treeiew.selection()
+            item = treeiew.selection()[0]
+            value = treeiew.item(item, "values")
+
+            date_entry.delete(0, END)
+            date_entry.insert(0, values[1])
+            type_combobox.set(value[2])
+            amount_entry.delete(0, END)
+            amount_entry.insert(0, value[3])
+            comment_entry.delete(0, END)
+            comment_entry.insert(0, value[4])
+
+        
 
 
 root = Tk()
 root.title("Домашня бухгалтерія")
 root.geometry("700x340")
-root.resizable(width:False, height:False)
+root.resizable(False, False)
 
 left_frame = Frame(root, bd=2, relief=SUNKEN)
 left_frame.pack(side=LEFT, pady=10)
@@ -139,7 +177,7 @@ for row in rows:
     treeiew.insert(parent:"", END, values=row)
 
 
-
+treeiew.bind("<ButtonRelease-1>", on_row_click)
 
 root.mainloop()
 
